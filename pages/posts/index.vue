@@ -11,6 +11,20 @@
     //fetch data from API with "useAsyncData"
     const { data: posts } : any = await useAsyncData('posts', () => $fetch(`${config.public.apiBase}/api/posts`))
 
+    //method deletePost
+    const deletePost = async (id: number) => {
+
+        //delete data with API
+        await $fetch(`${config.public.apiBase}/api/posts/${id}`, {
+
+            //method
+            method: 'DELETE'
+        });
+
+        //refersh data posts
+        refreshNuxtData('posts');
+    }
+
 </script>
 
 <template>
@@ -38,7 +52,7 @@
                                     <td>{{ post.content }}</td>
                                     <td class="text-center">
                                         <NuxtLink :to="`/posts/edit/${post.id}`" class="btn btn-sm btn-primary rounded-sm shadow border-0 me-2">EDIT</NuxtLink>
-                                        <button class="btn btn-sm btn-danger rounded-sm shadow border-0">DELETE</button>
+                                        <button @click="deletePost(post.id)" class="btn btn-sm btn-danger rounded-sm shadow border-0">DELETE</button>
                                     </td>
                                 </tr>
                             </tbody>
